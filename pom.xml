@@ -1,0 +1,74 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>de.voomdoon.util</groupId>
+		<artifactId>vd-util-parent</artifactId>
+		<version>0.1.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>vd-io-util</artifactId>
+	<version>0.1.0-SNAPSHOT</version>
+
+	<dependencies>
+		<!-- + + + + + + + + + + compile dependencies + + + + + + + + + + -->
+		<!-- + + + + + internal voomdoon compile dependencies + + + + + -->
+		<dependency>
+			<groupId>de.voomdoon.logging</groupId>
+			<artifactId>vd-logging</artifactId>
+			<version>0.1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>de.voomdoon.util</groupId>
+			<artifactId>vd-cli-util</artifactId>
+			<version>0.1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>de.voomdoon.logging</groupId>
+			<artifactId>vd-log4j2-logging-connector</artifactId>
+			<version>0.1.0-SNAPSHOT</version>
+		</dependency>
+		<!-- - - - - - internal voomdoon compile dependencies - - - - - -->
+
+		<!-- + + + + + external compile dependencies + + + + + -->
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.11.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.26</version>
+		</dependency>
+		<!-- - - - - - external compile dependencies - - - - - -->
+		<!-- - - - - - - - - - - compile dependencies - - - - - - - - - - -->
+
+		<!-- + + + + + + + + + + test dependencies + + + + + + + + + + -->
+		<!-- + + + + + internal voomdoon test dependencies + + + + + -->
+		<dependency>
+			<groupId>de.voomdoon.testing</groupId>
+			<artifactId>vd-test-util</artifactId>
+			<version>0.1.0-SNAPSHOT</version>
+		</dependency>
+		<!-- - - - - - internal voomdoon test dependencies - - - - - -->
+
+		<!-- + + + + + external test dependencies + + + + + -->
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<version>3.24.2</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>5.9.2</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- - - - - - external test dependencies - - - - - -->
+		<!-- - - - - - - - - - - test dependencies - - - - - - - - - - -->
+	</dependencies>
+</project>
