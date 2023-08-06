@@ -19,7 +19,7 @@ import de.voomdoon.testing.tests.TestBase;
  *
  * @author André Schulz
  *
- * @since DOCME add inception version number
+ * @since 0.1.0
  */
 public class IOStreamUtilTest {
 
@@ -28,7 +28,7 @@ public class IOStreamUtilTest {
 	 *
 	 * @author André Schulz
 	 *
-	 * @since DOCME add inception version number
+	 * @since 0.1.0
 	 */
 	static class CopyTest extends TestBase {
 
@@ -55,7 +55,7 @@ public class IOStreamUtilTest {
 	 *
 	 * @author André Schulz
 	 *
-	 * @since DOCME add inception version number
+	 * @since 0.1.0
 	 */
 	static class GetInputStreamTest extends TestBase {
 
@@ -75,7 +75,7 @@ public class IOStreamUtilTest {
 
 		/**
 		 * @throws IOException
-		 * @since DOCME add inception version number
+		 * @since 0.1.0
 		 */
 		@Test
 		void test_resource_withLeadingSlash() throws IOException {
@@ -90,7 +90,7 @@ public class IOStreamUtilTest {
 
 		/**
 		 * @throws IOException
-		 * @since DOCME add inception version number
+		 * @since 0.1.0
 		 */
 		@Test
 		void test_resource_withoutLeadingSlash() throws IOException {
@@ -109,7 +109,7 @@ public class IOStreamUtilTest {
 	 *
 	 * @author André Schulz
 	 *
-	 * @since DOCME add inception version number
+	 * @since 0.1.0
 	 */
 	static class ToString_InputStream_Test extends TestBase {
 
@@ -119,7 +119,7 @@ public class IOStreamUtilTest {
 		 * DOCME add JavaDoc for method test
 		 * 
 		 * @throws Exception
-		 * @since DOCME add inception version number
+		 * @since 0.1.0
 		 */
 		@Test
 		void test() throws Exception {

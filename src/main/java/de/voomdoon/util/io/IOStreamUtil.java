@@ -16,7 +16,7 @@ import lombok.experimental.UtilityClass;
  *
  * @author André Schulz
  *
- * @since DOCME add inception version number
+ * @since 0.1.0
  */
 @UtilityClass
 public class IOStreamUtil {
@@ -29,7 +29,7 @@ public class IOStreamUtil {
 	 * @param outputStream
 	 *            {@link OutputStream}
 	 * @throws IOException
-	 * @since DOCME add inception version number
+	 * @since 0.1.0
 	 */
 	public static void copy(InputStream inputStream, OutputStream outputStream) throws IOException {
 		IOUtils.copy(inputStream, outputStream);
@@ -44,7 +44,7 @@ public class IOStreamUtil {
 	 *            {@link String} indicating resource or {@link File}
 	 * @return {@link InputStream}
 	 * @throws IOException
-	 * @since DOCME add inception version number
+	 * @since 0.1.0
 	 */
 	public static InputStream getInputStream(String source) throws IOException {
 		InputStream is = IOStreamUtil.class.getResourceAsStream(source);
@@ -71,7 +71,7 @@ public class IOStreamUtil {
 	 *            {@link InputStream}
 	 * @return {@link String}
 	 * @throws IOException
-	 * @since DOCME add inception version number
+	 * @since 0.1.0
 	 */
 	public static String toString(InputStream inputStream) throws IOException {
 		String result = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
