@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import de.voomdoon.testing.tests.TestBase;
@@ -30,7 +31,8 @@ public class IOStreamUtilTest {
 	 *
 	 * @since 0.1.0
 	 */
-	static class CopyTest extends TestBase {
+	@Nested
+	class CopyTest extends TestBase {
 
 		// TODO add test for closed input stream
 
@@ -57,7 +59,8 @@ public class IOStreamUtilTest {
 	 *
 	 * @since 0.1.0
 	 */
-	static class GetInputStreamTest extends TestBase {
+	@Nested
+	class GetInputStreamTest extends TestBase {
 
 		@Test
 		void test_file() throws Exception {
@@ -111,7 +114,8 @@ public class IOStreamUtilTest {
 	 *
 	 * @since 0.1.0
 	 */
-	static class ToString_InputStream_Test extends TestBase {
+	@Nested
+	class ToString_InputStream_Test extends TestBase {
 
 		// TODO add test for closed input stream
 
