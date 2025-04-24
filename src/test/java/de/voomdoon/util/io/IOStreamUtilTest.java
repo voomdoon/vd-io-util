@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 import de.voomdoon.testing.tests.TestBase;
 
 /**
- * DOCME add JavaDoc for
+ * Tests for {@link IOStreamUtil}.
  *
  * @author André Schulz
  *
@@ -25,7 +25,7 @@ import de.voomdoon.testing.tests.TestBase;
 public class IOStreamUtilTest {
 
 	/**
-	 * Test class for {@link IOStreamUtil#copy(InputStream, OutputStream)}.
+	 * Tests for {@link IOStreamUtil#copy(InputStream, OutputStream)}.
 	 *
 	 * @author André Schulz
 	 *
@@ -53,7 +53,7 @@ public class IOStreamUtilTest {
 	}
 
 	/**
-	 * Test class for {@link IOStreamUtil#getInputStream(String)}.
+	 * Tests for {@link IOStreamUtil#getInputStream(String)}.
 	 *
 	 * @author André Schulz
 	 *
@@ -108,7 +108,7 @@ public class IOStreamUtilTest {
 	}
 
 	/**
-	 * DOCME add JavaDoc for IOUtilTest
+	 * Tests for {@link IOStreamUtil#toString(InputStream)}.
 	 *
 	 * @author André Schulz
 	 *
@@ -120,8 +120,6 @@ public class IOStreamUtilTest {
 		// TODO add test for closed input stream
 
 		/**
-		 * DOCME add JavaDoc for method test
-		 * 
 		 * @throws Exception
 		 * @since 0.1.0
 		 */

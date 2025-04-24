@@ -12,7 +12,7 @@ import org.apache.commons.io.IOUtils;
 import lombok.experimental.UtilityClass;
 
 /**
- * DOCME add JavaDoc for
+ * Utility for IO streams.
  *
  * @author André Schulz
  *
@@ -38,7 +38,11 @@ public class IOStreamUtil {
 	}
 
 	/**
-	 * DOCME add JavaDoc for method getInputStream
+	 * Returns an {@link InputStream} from a given source. Supported sources are:
+	 * <ul>
+	 * <li>Classpath resource (e.g. "/path/to/resource.txt", with optional leading '/')</li>
+	 * <li>File (e.g. "/path/to/resource.txt")</li>
+	 * <ul>
 	 * 
 	 * @param source
 	 *            {@link String} indicating resource or {@link File}
@@ -65,7 +69,7 @@ public class IOStreamUtil {
 	}
 
 	/**
-	 * DOCME add JavaDoc for method toString
+	 * Converts an {@link InputStream} to a {@link String} using UTF-8 encoding and closes the stream.
 	 * 
 	 * @param inputStream
 	 *            {@link InputStream}
