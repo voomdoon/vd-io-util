@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,7 +13,10 @@ import java.nio.charset.StandardCharsets;
 
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
+import de.voomdoon.testing.file.TempFileExtension;
+import de.voomdoon.testing.file.TempOutputFile;
 import de.voomdoon.testing.tests.TestBase;
 
 /**
@@ -32,15 +36,16 @@ public class IOStreamUtilTest {
 	 * @since 0.1.0
 	 */
 	@Nested
+	@ExtendWith(TempFileExtension.class)
 	class CopyTest extends TestBase {
 
 		// TODO add test for closed input stream
 
 		@Test
-		void test() throws Exception {
+		void test(@TempOutputFile File file) throws Exception {
 			logTestStart();
 
-			FileOutputStream fos = new FileOutputStream(getTempDirectory() + "/output.txt");
+			FileOutputStream fos = new FileOutputStream(file);
 			IOStreamUtil.copy(IOStreamUtil.getInputStream("test.txt"), fos);
 
 			try {
@@ -60,16 +65,16 @@ public class IOStreamUtilTest {
 	 * @since 0.1.0
 	 */
 	@Nested
+	@ExtendWith(TempFileExtension.class)
 	class GetInputStreamTest extends TestBase {
 
 		@Test
-		void test_file() throws Exception {
+		void test_file(@TempOutputFile File file) throws Exception {
 			logTestStart();
 
-			String fileName = getTempDirectory() + "/test.txt";
-			IOStreamUtil.copy(IOStreamUtil.getInputStream("test.txt"), new FileOutputStream(fileName));
+			IOStreamUtil.copy(IOStreamUtil.getInputStream("test.txt"), new FileOutputStream(file));
 
-			InputStream actual = IOStreamUtil.getInputStream(fileName);
+			InputStream actual = IOStreamUtil.getInputStream(file.getAbsolutePath());
 			assertThat(actual).isNotNull();
 
 			String actualString = IOStreamUtil.toString(actual);
