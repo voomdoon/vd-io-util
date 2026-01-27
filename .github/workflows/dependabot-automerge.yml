@@ -24,7 +24,7 @@ jobs:
       - name: "Guard: ensure branch protection requires CI check"
         env:
           GH_TOKEN: ${{ secrets.DEPENDABOT_AUTOMERGE_PAT }}
-          EXPECTED_CHECK: ci
+          EXPECTED_CHECK: verify
           PROTECTED_BRANCH: main
         run: |
           set -euo pipefail
