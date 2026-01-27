@@ -58,7 +58,8 @@ jobs:
             exit 1
           fi
 
-    echo "OK: Branch protection requires '${EXPECTED_CHECK}'."
+          echo "OK: Branch protection requires '${EXPECTED_CHECK}'."
+
   approve:
     needs: check_setup
     if: >
