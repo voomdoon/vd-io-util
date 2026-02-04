@@ -1,7 +1,7 @@
 package de.voomdoon.util.io;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -17,7 +17,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import de.voomdoon.testing.file.TempFileExtension;
 import de.voomdoon.testing.file.TempOutputFile;
-import de.voomdoon.testing.tests.TestBase;
 
 /**
  * Tests for {@link IOStreamUtil}.
@@ -37,23 +36,17 @@ public class IOStreamUtilTest {
 	 */
 	@Nested
 	@ExtendWith(TempFileExtension.class)
-	class CopyTest extends TestBase {
+	class CopyTest {
 
 		// TODO add test for closed input stream
 
 		@Test
 		void test(@TempOutputFile File file) throws Exception {
-			logTestStart();
-
 			FileOutputStream fos = new FileOutputStream(file);
 			IOStreamUtil.copyAndClose(IOStreamUtil.getInputStream("test.txt"), fos);
 
-			try {
-				fos.write(0);// TODO improve check for closed output stream
-				fail("Missing 'IOException'!");
-			} catch (IOException e) {
-				logger.debug("expected error: " + e.getMessage());
-			}
+			assertThatThrownBy(() -> fos.write(0))
+                .isInstanceOf(IOException.class);
 		}
 	}
 
@@ -66,12 +59,10 @@ public class IOStreamUtilTest {
 	 */
 	@Nested
 	@ExtendWith(TempFileExtension.class)
-	class GetInputStreamTest extends TestBase {
+	class GetInputStreamTest {
 
 		@Test
 		void test_file(@TempOutputFile File file) throws Exception {
-			logTestStart();
-
 			IOStreamUtil.copyAndClose(IOStreamUtil.getInputStream("test.txt"), new FileOutputStream(file));
 
 			InputStream actual = IOStreamUtil.getInputStream(file.getAbsolutePath());
@@ -87,8 +78,6 @@ public class IOStreamUtilTest {
 		 */
 		@Test
 		void test_resource_withLeadingSlash() throws IOException {
-			logTestStart();
-
 			InputStream actual = IOStreamUtil.getInputStream("/test.txt");
 			assertThat(actual).isNotNull();
 
@@ -102,8 +91,6 @@ public class IOStreamUtilTest {
 		 */
 		@Test
 		void test_resource_withoutLeadingSlash() throws IOException {
-			logTestStart();
-
 			InputStream actual = IOStreamUtil.getInputStream("test.txt");
 			assertThat(actual).isNotNull();
 
@@ -120,7 +107,7 @@ public class IOStreamUtilTest {
 	 * @since 0.1.0
 	 */
 	@Nested
-	class ToString_InputStream_Test extends TestBase {
+	class ToString_InputStream_Test {
 
 		// TODO add test for closed input stream
 
@@ -130,9 +117,8 @@ public class IOStreamUtilTest {
 		 */
 		@Test
 		void test() throws Exception {
-			logTestStart();
-
-			String actual = IOStreamUtil.toStringAndClose(new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8)));
+			String actual = IOStreamUtil
+					.toStringAndClose(new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8)));
 			assertThat(actual).isEqualTo("test");
 		}
 	}
