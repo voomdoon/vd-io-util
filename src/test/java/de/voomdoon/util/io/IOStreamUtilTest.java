@@ -29,7 +29,7 @@ import de.voomdoon.testing.tests.TestBase;
 public class IOStreamUtilTest {
 
 	/**
-	 * Tests for {@link IOStreamUtil#copy(InputStream, OutputStream)}.
+	 * Tests for {@link IOStreamUtil#copyAndClose(InputStream, OutputStream)}.
 	 *
 	 * @author André Schulz
 	 *
@@ -46,7 +46,7 @@ public class IOStreamUtilTest {
 			logTestStart();
 
 			FileOutputStream fos = new FileOutputStream(file);
-			IOStreamUtil.copy(IOStreamUtil.getInputStream("test.txt"), fos);
+			IOStreamUtil.copyAndClose(IOStreamUtil.getInputStream("test.txt"), fos);
 
 			try {
 				fos.write(0);// TODO improve check for closed output stream
@@ -72,12 +72,12 @@ public class IOStreamUtilTest {
 		void test_file(@TempOutputFile File file) throws Exception {
 			logTestStart();
 
-			IOStreamUtil.copy(IOStreamUtil.getInputStream("test.txt"), new FileOutputStream(file));
+			IOStreamUtil.copyAndClose(IOStreamUtil.getInputStream("test.txt"), new FileOutputStream(file));
 
 			InputStream actual = IOStreamUtil.getInputStream(file.getAbsolutePath());
 			assertThat(actual).isNotNull();
 
-			String actualString = IOStreamUtil.toString(actual);
+			String actualString = IOStreamUtil.toStringAndClose(actual);
 			assertThat(actualString).isEqualTo("hello\nBerlin");
 		}
 
@@ -92,7 +92,7 @@ public class IOStreamUtilTest {
 			InputStream actual = IOStreamUtil.getInputStream("/test.txt");
 			assertThat(actual).isNotNull();
 
-			String actualString = IOStreamUtil.toString(actual);
+			String actualString = IOStreamUtil.toStringAndClose(actual);
 			assertThat(actualString).isEqualTo("hello\nBerlin");
 		}
 
@@ -107,13 +107,13 @@ public class IOStreamUtilTest {
 			InputStream actual = IOStreamUtil.getInputStream("test.txt");
 			assertThat(actual).isNotNull();
 
-			String actualString = IOStreamUtil.toString(actual);
+			String actualString = IOStreamUtil.toStringAndClose(actual);
 			assertThat(actualString).isEqualTo("hello\nBerlin");
 		}
 	}
 
 	/**
-	 * Tests for {@link IOStreamUtil#toString(InputStream)}.
+	 * Tests for {@link IOStreamUtil#toStringAndClose(InputStream)}.
 	 *
 	 * @author André Schulz
 	 *
@@ -132,7 +132,7 @@ public class IOStreamUtilTest {
 		void test() throws Exception {
 			logTestStart();
 
-			String actual = IOStreamUtil.toString(new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8)));
+			String actual = IOStreamUtil.toStringAndClose(new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8)));
 			assertThat(actual).isEqualTo("test");
 		}
 	}

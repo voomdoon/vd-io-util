@@ -31,7 +31,7 @@ public class IOStreamUtil {
 	 * @throws IOException
 	 * @since 0.1.0
 	 */
-	public static void copy(InputStream inputStream, OutputStream outputStream) throws IOException {
+	public static void copyAndClose(InputStream inputStream, OutputStream outputStream) throws IOException {
 		IOUtils.copy(inputStream, outputStream);
 		inputStream.close();
 		outputStream.close();
@@ -77,7 +77,7 @@ public class IOStreamUtil {
 	 * @throws IOException
 	 * @since 0.1.0
 	 */
-	public static String toString(InputStream inputStream) throws IOException {
+	public static String toStringAndClose(InputStream inputStream) throws IOException {
 		String result = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
 		inputStream.close();
 
