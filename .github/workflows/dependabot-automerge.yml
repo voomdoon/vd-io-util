@@ -3,10 +3,6 @@ name: Dependabot auto-merge
 on:
   pull_request:
 
-permissions:
-  contents: write
-  pull-requests: write
-
 concurrency:
   group: dependabot-automerge-${{ github.event.pull_request.number }}
   cancel-in-progress: true
@@ -14,6 +10,9 @@ concurrency:
 jobs:
   check_setup:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
     steps:
       - name: Check for DEPENDABOT_AUTOMERGE_PAT secret
         run: |
@@ -67,13 +66,15 @@ jobs:
       github.event.pull_request.draft == false &&
       github.event.pull_request.base.ref == 'main'
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
     outputs:
       should_automerge: ${{ steps.policy.outputs.should_automerge }}
 
     steps:
       - id: meta
         name: Fetch metadata 
-        uses: dependabot/fetch-metadata@v2
+        uses: dependabot/fetch-metadata@21025c705c08248db411dc16f3619e6b5f9ea21a # v2.5.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -107,6 +108,8 @@ jobs:
     needs: approve
     if: needs.approve.outputs.should_automerge == 'true'
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Enable auto-merge
         run: |
