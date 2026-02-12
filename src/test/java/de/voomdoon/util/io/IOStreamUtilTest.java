@@ -1,15 +1,16 @@
 package de.voomdoon.util.io;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -36,17 +37,63 @@ public class IOStreamUtilTest {
 	 */
 	@Nested
 	@ExtendWith(TempFileExtension.class)
-	class CopyTest {
+	class CopyAndCloseTest {
 
-		// TODO add test for closed input stream
-
+		/**
+		 * @since 0.1.0
+		 */
 		@Test
-		void test(@TempOutputFile File file) throws Exception {
-			FileOutputStream fos = new FileOutputStream(file);
-			IOStreamUtil.copyAndClose(IOStreamUtil.getInputStream("test.txt"), fos);
+		void test_inputStreamIsClosed() throws Exception {
+			AtomicBoolean isClosed = new AtomicBoolean(false);
 
-			assertThatThrownBy(() -> fos.write(0))
-                .isInstanceOf(IOException.class);
+			InputStream inputStream = new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8)) {
+				@Override
+				public void close() throws IOException {
+					isClosed.set(true);
+					super.close();
+				}
+			};
+
+			OutputStream outputStream = new ByteArrayOutputStream();
+
+			IOStreamUtil.copyAndClose(inputStream, outputStream);
+
+			assertThat(isClosed.get()).isTrue();
+		}
+
+		/**
+		 * @since 0.1.0
+		 */
+		@Test
+		void test_outputStreamContent() throws Exception {
+			String inputContent = "test123";
+			InputStream inputStream = new ByteArrayInputStream(inputContent.getBytes(StandardCharsets.UTF_8));
+			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+			IOStreamUtil.copyAndClose(inputStream, outputStream);
+
+			String outputContent = outputStream.toString(StandardCharsets.UTF_8.name());
+			assertThat(outputContent).isEqualTo(inputContent);
+		}
+
+		/**
+		 * @since 0.1.0
+		 */
+		@Test
+		void test_outputStreamIsClosed() throws Exception {
+			AtomicBoolean isClosed = new AtomicBoolean(false);
+			InputStream inputStream = new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8));
+
+			OutputStream outputStream = new ByteArrayOutputStream() {
+				@Override
+				public void close() throws IOException {
+					isClosed.set(true);
+					super.close();
+				}
+			};
+
+			IOStreamUtil.copyAndClose(inputStream, outputStream);
+			assertThat(isClosed.get()).isTrue();
 		}
 	}
 
@@ -61,13 +108,16 @@ public class IOStreamUtilTest {
 	@ExtendWith(TempFileExtension.class)
 	class GetInputStreamTest {
 
+		/**
+		 * @since 0.1.0
+		 */
 		@Test
 		void test_file(@TempOutputFile File file) throws Exception {
 			IOStreamUtil.copyAndClose(IOStreamUtil.getInputStream("test.txt"), new FileOutputStream(file));
 
 			InputStream actual = IOStreamUtil.getInputStream(file.getAbsolutePath());
-			assertThat(actual).isNotNull();
 
+			assertThat(actual).isNotNull();
 			String actualString = IOStreamUtil.toStringAndClose(actual);
 			assertThat(actualString).isEqualTo("hello\nBerlin");
 		}
@@ -79,8 +129,8 @@ public class IOStreamUtilTest {
 		@Test
 		void test_resource_withLeadingSlash() throws IOException {
 			InputStream actual = IOStreamUtil.getInputStream("/test.txt");
-			assertThat(actual).isNotNull();
 
+			assertThat(actual).isNotNull();
 			String actualString = IOStreamUtil.toStringAndClose(actual);
 			assertThat(actualString).isEqualTo("hello\nBerlin");
 		}
@@ -92,8 +142,8 @@ public class IOStreamUtilTest {
 		@Test
 		void test_resource_withoutLeadingSlash() throws IOException {
 			InputStream actual = IOStreamUtil.getInputStream("test.txt");
-			assertThat(actual).isNotNull();
 
+			assertThat(actual).isNotNull();
 			String actualString = IOStreamUtil.toStringAndClose(actual);
 			assertThat(actualString).isEqualTo("hello\nBerlin");
 		}
@@ -107,18 +157,37 @@ public class IOStreamUtilTest {
 	 * @since 0.1.0
 	 */
 	@Nested
-	class ToString_InputStream_Test {
-
-		// TODO add test for closed input stream
+	class ToStringAndCloseTest {
 
 		/**
-		 * @throws Exception
 		 * @since 0.1.0
 		 */
 		@Test
-		void test() throws Exception {
-			String actual = IOStreamUtil
-					.toStringAndClose(new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8)));
+		void test_inputStreamIsClosed() throws Exception {
+			AtomicBoolean isClosed = new AtomicBoolean(false);
+
+			InputStream inputStream = new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8)) {
+				@Override
+				public void close() throws IOException {
+					isClosed.set(true);
+					super.close();
+				}
+			};
+
+			IOStreamUtil.toStringAndClose(inputStream);
+
+			assertThat(isClosed.get()).isTrue();
+		}
+
+		/**
+		 * @since 0.1.0
+		 */
+		@Test
+		void test_result() throws Exception {
+			ByteArrayInputStream inputStream = new ByteArrayInputStream("test".getBytes(StandardCharsets.UTF_8));
+
+			String actual = IOStreamUtil.toStringAndClose(inputStream);
+
 			assertThat(actual).isEqualTo("test");
 		}
 	}
