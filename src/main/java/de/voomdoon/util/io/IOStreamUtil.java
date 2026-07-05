@@ -9,8 +9,6 @@ import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.io.IOUtils;
 
-import lombok.experimental.UtilityClass;
-
 /**
  * Utility for IO streams.
  *
@@ -18,8 +16,13 @@ import lombok.experimental.UtilityClass;
  *
  * @since 0.1.0
  */
-@UtilityClass
-public class IOStreamUtil {
+public final class IOStreamUtil {
+
+	/**
+	 * Prevents instantiation.
+	 */
+	private IOStreamUtil() {
+	}
 
 	/**
 	 * Copies all data from {@link InputStream} to {@link OutputStream} and closes both streams.
@@ -29,6 +32,7 @@ public class IOStreamUtil {
 	 * @param outputStream
 	 *            {@link OutputStream}
 	 * @throws IOException
+	 *             if copying or closing a stream fails
 	 * @since 0.1.0
 	 */
 	public static void copyAndClose(InputStream inputStream, OutputStream outputStream) throws IOException {
@@ -42,12 +46,13 @@ public class IOStreamUtil {
 	 * <ul>
 	 * <li>Classpath resource (e.g. "/path/to/resource.txt", with optional leading '/')</li>
 	 * <li>File (e.g. "/path/to/resource.txt")</li>
-	 * <ul>
+	 * </ul>
 	 * 
 	 * @param source
 	 *            {@link String} indicating resource or {@link File}
 	 * @return {@link InputStream}
 	 * @throws IOException
+	 *             if the source cannot be opened
 	 * @since 0.1.0
 	 */
 	public static InputStream getInputStream(String source) throws IOException {
@@ -75,6 +80,7 @@ public class IOStreamUtil {
 	 *            {@link InputStream}
 	 * @return {@link String}
 	 * @throws IOException
+	 *             if the stream cannot be read or closed
 	 * @since 0.1.0
 	 */
 	public static String toStringAndClose(InputStream inputStream) throws IOException {
