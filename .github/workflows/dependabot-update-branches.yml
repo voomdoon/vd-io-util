@@ -11,9 +11,7 @@ concurrency:
   group: dependabot-update-branches
   cancel-in-progress: false
 
-permissions:
-  contents: write
-  pull-requests: write
+permissions: {}
 
 jobs:
   update:
@@ -22,28 +20,21 @@ jobs:
       github.event.pull_request.user.login == 'dependabot[bot]'
     runs-on: ubuntu-slim
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          fetch-depth: 0
-          token: ${{ secrets.DEPENDABOT_AUTOMERGE_PAT }}
-
-      - name: Rebase out-of-date Dependabot PRs
+      - name: Ask Dependabot to rebase out-of-date PRs
         env:
           GH_TOKEN: ${{ secrets.DEPENDABOT_AUTOMERGE_PAT }}
         run: |
           set -euo pipefail
 
           base="main"
-
-          git config user.name "voomdoon-bot"
-          git config user.email "197564626+voomdoon-bot@users.noreply.github.com"
-          git fetch origin "$base"
+          repo="${{ github.repository }}"
 
           prs="$(gh pr list \
+            --repo "$repo" \
             --state open \
             --base "$base" \
             --author "dependabot[bot]" \
-            --json number,headRefName,headRepositoryOwner \
+            --json number,headRefName,headRepositoryOwner,isCrossRepository \
             --limit 100)"
 
           count="$(echo "$prs" | jq 'length')"
@@ -53,27 +44,13 @@ jobs:
             number="$(echo "$pr" | jq -r '.number')"
             branch="$(echo "$pr" | jq -r '.headRefName')"
             owner="$(echo "$pr" | jq -r '.headRepositoryOwner.login')"
+            is_cross_repository="$(echo "$pr" | jq -r '.isCrossRepository')"
 
-            if [ "$owner" != "${{ github.repository_owner }}" ]; then
-              echo "Skipping PR #$number from $owner/$branch because it is not in this repository owner."
+            if [ "$is_cross_repository" = "true" ]; then
+              echo "Skipping PR #$number from $owner/$branch because it is cross-repository."
               continue
             fi
 
-            echo "Rebasing PR #$number branch $branch onto origin/$base."
-
-            git fetch origin "$branch"
-            git checkout -B "$branch" "origin/$branch"
-
-            if git merge-base --is-ancestor "origin/$base" HEAD; then
-              echo "PR #$number is already up to date."
-              continue
-            fi
-
-            if git rebase "origin/$base"; then
-              git push --force-with-lease origin "HEAD:$branch"
-              echo "Rebased PR #$number."
-            else
-              git rebase --abort
-              echo "::warning::Could not rebase PR #$number cleanly."
-            fi
+            echo "Requesting Dependabot rebase for PR #$number branch $branch."
+            gh pr comment "$number" --repo "$repo" --body "@dependabot rebase"
           done
